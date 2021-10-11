@@ -1,3 +1,10 @@
+let loginCredentials = localStorage.getItem("loginStatus");
+if(loginCredentials == "false" || loginCredentials == null){
+
+}else{
+    location.assign("./orders.html");
+}
+
 var userName = document.querySelector(".login-form-username");
 var userPassword = document.querySelector(".login-form-password");
 let submitBtn = document.getElementById("submit");
