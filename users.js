@@ -17,34 +17,35 @@ $.ajax({
     }
 })
 
+//function to render user-data into DOM Tree
+let tableBody = document.getElementById("tableBody");
 function rowMaking(data) {
-    $("#tableBody").html("");
+    tableBody.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
-        data[i].dob.split("-");
-    }
-    for (let i = 0; i < data.length; i++) {
-        $(`#tableBody`).append(
-            $("<tr>").append(
-            $("<td>").attr("class", "dimColor").text(data[i].id),
-            $("<td>").html(`<img src="${data[i].profilePic}" alt="profilePic"/>`),
-            $("<td>").attr("class", "dimColor").text(`${data[i].fullName}`),
-            $("<td>").text(`${data[i].dob}`),
-            $("<td>").attr("class", "dimColor").text(data[i].gender),
-            $("<td>").attr("class", "dimColor").text(`${data[i].currentCity}, ${data[i].currentCountry}`)
-            )
-        );
+        tableBody.innerHTML += `
+            <tr>
+                <td class="dimColor">${data[i].id}</td>
+                <td><img src="${data[i].profilePic}" alt="profilePic"></td>
+                <td class="dimColor">${data[i].fullName}</td>
+                <td>${data[i].dob}</td>
+                <td class="dimColor">${data[i].gender}</td>
+                <td class="dimColor">${data[i].currentCity}, ${data[i].currentCountry}</td>
+            </tr>`
     }
 }
+
+//Selecting SearchBox by its ID
 let inputVal = document.getElementById("search-box");
-$(`#cross`).click(() => {
+$(`#cross`).click(() => { //to clear typed data in searchBox
+    inputVal.value = "";
+});
+
+$(`#reset`).click(() => { //to Reset searchBox and load back users data
     inputVal.value = "";
     rowMaking(tableData);
 });
 
-$(`#reset`).click(() => {
-    inputVal.value = "";
-    rowMaking(tableData);
-});
+//to get count of searchBox input value and if its greater than 0, display icon X, else keep hidden
 setInterval(() => {
     var search = document.getElementById("search-box").value.length;
     if (search > 0) {
@@ -57,7 +58,8 @@ setInterval(() => {
   
 document.getElementById("searchForm").onsubmit = (e) => {
     e.preventDefault();
-    const value = $("#search-box").val();
+    // const value = $("#search-box").val();
+    const value = inputVal.value;
     if (value.length >= 2) {
     let filteredData = search(value, tableData);
     rowMaking(filteredData);
@@ -68,12 +70,13 @@ document.getElementById("searchForm").onsubmit = (e) => {
     }
 };
 
+//Main Search Function to filter out names based on Value Entered by client.
 function search(value, data) {
     var newData = [];
     for (var i = 0; i < data.length; i++) {
         value = value.toLowerCase();
-        var firstName = data[i].fullName.toLowerCase();
-        if (firstName.includes(value)) {
+        var userFullName = data[i].fullName.toLowerCase();
+        if (userFullName.includes(value)) {
             newData.push(data[i]);
         }
     }
