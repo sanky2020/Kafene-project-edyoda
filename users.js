@@ -58,7 +58,6 @@ setInterval(() => {
   
 document.getElementById("searchForm").onsubmit = (e) => {
     e.preventDefault();
-    // const value = $("#search-box").val();
     const value = inputVal.value;
     if (value.length >= 2) {
     let filteredData = search(value, tableData);
